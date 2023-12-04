@@ -1,9 +1,11 @@
 # main.py
-from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsView, QPushButton, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsView, QPushButton, QVBoxLayout, QWidget, QLineEdit
 from PyQt5.QtCore import Qt
 from nodes import Node, NodeGraph
 from node_widget import NodeWidget
 from operation_nodes import OperationNode
+from add_table_dialog import AddTableDialog
+from table_widget import TableWidget
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -36,7 +38,7 @@ class MainWindow(QMainWindow):
 
         # Create buttons
         self.addButton = QPushButton("Add Table", self)
-        self.addButton.clicked.connect(self.add_table_node)
+        self.addButton.clicked.connect(self.show_add_table_dialog)
         layout.addWidget(self.addButton)
 
         self.addOperationButton = QPushButton("Add Operation", self)
@@ -49,20 +51,26 @@ class MainWindow(QMainWindow):
         # Show the main window
         self.show()
 
-    def add_table_node(self):
-        # Create a new table node
-        table_node = Node(node_id=len(self.table_nodes) + 1, data={"type": "Table"})
-        self.table_nodes.append(table_node)
+    def show_add_table_dialog(self):
+        dialog = AddTableDialog(self)
+        if dialog.exec_():
+            # Get the values entered in the dialog
+            rows = int(dialog.input_row.text())
+            columns = int(dialog.input_column.text())
 
-        # Add table node to the graph
-        self.graph.add_node(table_node)
+            # Create a new table node with specified rows and columns
+            table_node = Node(node_id=len(self.table_nodes) + 1, data={"type": "Table", "rows": rows, "columns": columns})
+            self.table_nodes.append(table_node)
 
-        # Create a NodeWidget and add it to the scene
-        node_widget = NodeWidget(table_node, width=50, height=30)
-        self.scene.addItem(node_widget)
+            # Add table node to the graph
+            self.graph.add_node(table_node)
 
-        # Position the node in the scene
-        node_widget.setPos(0, 0)
+            # Create a TableWidget and add it to the scene
+            table_widget = TableWidget(rows, columns)
+            self.scene.addWidget(table_widget)
+
+            # Position the table in the scene
+            table_widget.setGeometry(0, 0, columns * 100, rows * 30)
 
     def add_operation_node(self):
         # Create a new operation node
