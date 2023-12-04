@@ -1,10 +1,11 @@
 # main.py
-from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsView, QPushButton, QVBoxLayout, QWidget
+from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsView, QPushButton, QVBoxLayout, QWidget, QLineEdit
 from PyQt5.QtCore import Qt
 from nodes import Node, NodeGraph
 from node_widget import NodeWidget
 from operation_nodes import OperationNode
 from add_table_dialog import AddTableDialog
+from table_widget import TableWidget
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -64,12 +65,12 @@ class MainWindow(QMainWindow):
             # Add table node to the graph
             self.graph.add_node(table_node)
 
-            # Create a NodeWidget and add it to the scene
-            node_widget = NodeWidget(table_node, width=75, height=25)
-            self.scene.addItem(node_widget)
+            # Create a TableWidget and add it to the scene
+            table_widget = TableWidget(rows, columns)
+            self.scene.addWidget(table_widget)
 
-            # Position the node in the scene
-            node_widget.setPos(0, 0)
+            # Position the table in the scene
+            table_widget.setGeometry(0, 0, columns * 100, rows * 30)
 
     def add_operation_node(self):
         # Create a new operation node
