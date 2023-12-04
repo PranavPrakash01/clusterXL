@@ -2,7 +2,6 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsView, QPushButton, QVBoxLayout, QWidget, QLineEdit
 from PyQt5.QtCore import Qt
 from nodes import Node, NodeGraph
-from node_widget import NodeWidget
 from operation_nodes import OperationNode
 from add_table_dialog import AddTableDialog
 from table_widget import TableWidget
