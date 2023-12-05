@@ -1,5 +1,5 @@
 # table_widget.py
-from PyQt5.QtWidgets import QWidget, QGridLayout, QLineEdit
+from PyQt5.QtWidgets import QWidget, QGridLayout, QLineEdit, QMenu
 from PyQt5.QtCore import Qt, QPoint
 
 class TableWidget(QWidget):
@@ -24,6 +24,8 @@ class TableWidget(QWidget):
         if event.button() == Qt.LeftButton:
             self.is_dragging = True
             self.offset = event.pos()
+        elif event.button() == Qt.RightButton:
+            self.show_context_menu(event.pos())
 
     def mouseMoveEvent(self, event):
         if self.is_dragging:
@@ -33,3 +35,18 @@ class TableWidget(QWidget):
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton:
             self.is_dragging = False
+
+    def show_context_menu(self, pos):
+        menu = QMenu(self)
+
+        edit_action = menu.addAction("Edit")
+        delete_action = menu.addAction("Delete")
+
+        action = menu.exec_(self.mapToGlobal(pos))
+
+        if action == delete_action:
+            self.delete_table()
+
+    def delete_table(self):
+        self.setParent(None)
+        self.deleteLater()
