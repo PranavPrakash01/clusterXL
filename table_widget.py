@@ -1,5 +1,5 @@
 # table_widget.py
-from PyQt5.QtWidgets import QWidget, QGridLayout, QLineEdit, QMenu
+from PyQt5.QtWidgets import QWidget, QGridLayout, QLineEdit, QMenu, QInputDialog
 from PyQt5.QtCore import Qt, QPoint
 
 class TableWidget(QWidget):
@@ -11,6 +11,9 @@ class TableWidget(QWidget):
 
         self.is_dragging = False
         self.offset = QPoint()
+
+        # Keep track of cell data
+        self.cell_data = [['' for _ in range(columns)] for _ in range(rows)]
 
         layout = QGridLayout(self)
         layout.setSpacing(0)  # Set spacing to 0 to reduce the distance between cells
@@ -44,8 +47,45 @@ class TableWidget(QWidget):
 
         action = menu.exec_(self.mapToGlobal(pos))
 
-        if action == delete_action:
+        if action == edit_action:
+            self.edit_table()
+        elif action == delete_action:
             self.delete_table()
+
+    def edit_table(self):
+        rows, ok1 = QInputDialog.getInt(self, "Edit Rows", "Enter the number of rows:", self.rows, 1, 100, 1)
+        columns, ok2 = QInputDialog.getInt(self, "Edit Columns", "Enter the number of columns:", self.columns, 1, 100, 1)
+
+        if ok1 and ok2:
+            self.update_table(rows, columns)
+
+    def update_table(self, rows, columns):
+        # Keep track of existing data
+        existing_data = [[self.cells[row][col].text() for col in range(self.columns)] for row in range(self.rows)]
+
+        self.rows = rows
+        self.columns = columns
+
+        # Clear existing cells
+        for row in range(len(self.cells)):
+            for col in range(len(self.cells[row])):
+                self.cells[row][col].deleteLater()
+
+        # Create new cells
+        self.cells = [[QLineEdit(self) for _ in range(columns)] for _ in range(rows)]
+
+        layout = self.layout()
+        for row in range(rows):
+            for col in range(columns):
+                # Set the text in the new cell
+                if row < len(existing_data) and col < len(existing_data[row]):
+                    self.cells[row][col].setText(existing_data[row][col])
+                layout.addWidget(self.cells[row][col], row, col)
+
+        # Resize the table container
+        new_width = columns * self.cells[0][0].width() + (columns - 1) * self.layout().spacing()
+        new_height = rows * self.cells[0][0].height() + (rows - 1) * self.layout().spacing()
+        self.resize(new_width, new_height)
 
     def delete_table(self):
         self.setParent(None)
