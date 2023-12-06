@@ -21,6 +21,8 @@ class TableWidget(QWidget):
 
         for row in range(rows):
             for col in range(columns):
+                # Right-align the text
+                self.cells[row][col].setAlignment(Qt.AlignRight | Qt.AlignVCenter)
                 layout.addWidget(self.cells[row][col], row, col)
 
     def mousePressEvent(self, event):
@@ -80,12 +82,9 @@ class TableWidget(QWidget):
                 # Set the text in the new cell
                 if row < len(existing_data) and col < len(existing_data[row]):
                     self.cells[row][col].setText(existing_data[row][col])
+                # Right-align the text
+                self.cells[row][col].setAlignment(Qt.AlignRight | Qt.AlignVCenter)
                 layout.addWidget(self.cells[row][col], row, col)
-
-        # Resize the table container
-        new_width = columns * self.cells[0][0].width() + (columns - 1) * self.layout().spacing()
-        new_height = rows * self.cells[0][0].height() + (rows - 1) * self.layout().spacing()
-        self.resize(new_width, new_height)
 
     def delete_table(self):
         self.setParent(None)
