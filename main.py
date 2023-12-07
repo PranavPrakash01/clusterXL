@@ -67,10 +67,7 @@ class MainWindow(QMainWindow):
             # Create a TableWidget and add it to the scene
             table_widget = TableWidget(rows, columns)
             self.scene.addWidget(table_widget)
-
-            # Position the table in the scene
-            table_widget.setGeometry(0, 0, columns * 100, rows * 30)
-
+            
     def add_operation_node(self):
         # Create a new operation node
         operation_node = OperationNode(operation="Addition")
