@@ -2,7 +2,7 @@
 from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsView, QPushButton, QVBoxLayout, QWidget, QHBoxLayout
 from PyQt5.QtCore import Qt
 from nodes import Node, NodeGraph
-from operation_nodes import OperationNode
+from operation_nodes import create_operation_menu
 from add_table_dialog import AddTableDialog
 from table_widget import TableWidget
 
@@ -76,15 +76,8 @@ class MainWindow(QMainWindow):
             self.scene.addWidget(table_widget)
             
     def add_operation_node(self):
-        # Create a new operation node
-        operation_node = OperationNode(operation="Addition")
-        self.operation_nodes.append(operation_node)
+        create_operation_menu(self)
 
-        # Add operation node to the scene
-        self.scene.addItem(operation_node)
-
-        # Position the node in the scene
-        operation_node.setPos(0, 0)
 
 def main():
     # Initialize the application
