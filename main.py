@@ -1,5 +1,5 @@
 # main.py
-from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsView, QPushButton, QVBoxLayout, QWidget, QLineEdit
+from PyQt5.QtWidgets import QApplication, QMainWindow, QGraphicsScene, QGraphicsView, QPushButton, QVBoxLayout, QWidget, QHBoxLayout
 from PyQt5.QtCore import Qt
 from nodes import Node, NodeGraph
 from operation_nodes import OperationNode
@@ -12,13 +12,15 @@ class MainWindow(QMainWindow):
 
         # Create the main window
         self.setWindowTitle("Node-based Spreadsheet")
-        self.setGeometry(100, 100, 800, 600)
 
         # Create a central widget and layout
         central_widget = QWidget(self)
         self.setCentralWidget(central_widget)
 
         layout = QVBoxLayout(central_widget)
+
+        # Create a ribbon layout
+        ribbon_layout = QHBoxLayout()
 
         # Create a QGraphicsScene
         self.scene = QGraphicsScene()
@@ -27,6 +29,20 @@ class MainWindow(QMainWindow):
         # Create a QGraphicsView
         self.view = QGraphicsView(self.scene)
         self.view.setAlignment(Qt.AlignLeft | Qt.AlignTop)
+
+        # Create buttons and add them to the ribbon
+        self.addButton = QPushButton("Add Table", self)
+        self.addButton.clicked.connect(self.show_add_table_dialog)
+        ribbon_layout.addWidget(self.addButton)
+
+        self.addOperationButton = QPushButton("Add Operation", self)
+        self.addOperationButton.clicked.connect(self.add_operation_node)
+        ribbon_layout.addWidget(self.addOperationButton)
+
+        # Add the ribbon layout to the main layout
+        layout.addLayout(ribbon_layout)
+
+        # Add the QGraphicsView to the main layout
         layout.addWidget(self.view)
 
         # Create table nodes
@@ -35,20 +51,11 @@ class MainWindow(QMainWindow):
         # Create operation nodes
         self.operation_nodes = []
 
-        # Create buttons
-        self.addButton = QPushButton("Add Table", self)
-        self.addButton.clicked.connect(self.show_add_table_dialog)
-        layout.addWidget(self.addButton)
-
-        self.addOperationButton = QPushButton("Add Operation", self)
-        self.addOperationButton.clicked.connect(self.add_operation_node)
-        layout.addWidget(self.addOperationButton)
-
         # Create a graph instance
         self.graph = NodeGraph()
 
         # Show the main window
-        self.show()
+        self.showMaximized()
 
     def show_add_table_dialog(self):
         dialog = AddTableDialog(self)
