@@ -1,16 +1,22 @@
 # operation_nodes.py
-from PyQt5.QtWidgets import QGraphicsEllipseItem, QGraphicsTextItem
+from PyQt5.QtWidgets import QMenu, QAction
 
+def create_operation_menu(main_window):
+    # Create a menu
+    menu = QMenu(main_window)
 
-class OperationNode(QGraphicsEllipseItem):
-    def __init__(self, operation, radius=20):
-        super().__init__(-radius, -radius, 2 * radius, 2 * radius)
-        self.operation = operation
-        self.setFlag(QGraphicsEllipseItem.ItemIsMovable)
-        self.setFlag(QGraphicsEllipseItem.ItemSendsGeometryChanges)
-        self.setAcceptHoverEvents(True)
-        self.text_item = QGraphicsTextItem(operation, parent=self)
+    # Create actions for single input operations
+    single_input_menu = menu.addAction("Single Input Operations")
 
-    def mousePressEvent(self, event):
-        print(f"Clicked on Operation Node: {self.operation}")
-        super().mousePressEvent(event)
+    # Create actions for double input operations
+    double_input_menu = menu.addAction("Double Input Operations")
+
+    # Create actions for multi input operations
+    multi_input_menu = menu.addAction("Multi Input Operations")
+
+    # Show the menu at the cursor position
+    action = menu.exec_(main_window.cursor().pos())
+
+    # Add logic here to handle the selected action
+    if action:
+        print(f"Selected operation: {action.text()}")
