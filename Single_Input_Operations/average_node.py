@@ -1,5 +1,5 @@
 # average_node.py
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QMenu, QAction
 from PyQt5.QtCore import Qt, QPoint
 
 class AverageNode(QWidget):
@@ -19,6 +19,10 @@ class AverageNode(QWidget):
         # Value
         self.cell_widget = QLineEdit("0")
         self.cell_widget.setAlignment(Qt.AlignRight | Qt.AlignVCenter)  # Right-align the text
+        self.cell_widget.setReadOnly(True)  # Make the QLineEdit read-only
+        self.cell_widget.setContextMenuPolicy(Qt.CustomContextMenu)
+        self.cell_widget.customContextMenuRequested.connect(self.show_context_menu)
+
         layout.addWidget(self.cell_widget)
 
     def mousePressEvent(self, event):
@@ -26,8 +30,7 @@ class AverageNode(QWidget):
             self.is_dragging = True
             self.offset = event.pos()
         elif event.button() == Qt.RightButton:
-            # Add logic for the right mouse button click if needed
-            pass
+            self.show_context_menu(event.pos())
 
     def mouseMoveEvent(self, event):
         if self.is_dragging:
@@ -38,6 +41,15 @@ class AverageNode(QWidget):
         if event.button() == Qt.LeftButton:
             self.is_dragging = False
 
-    def mouseDoubleClickEvent(self, event):
-        # Add logic for the double-click event if needed
-        pass
+    def show_context_menu(self, pos):
+        menu = QMenu(self)
+
+        delete_action = menu.addAction("Delete")
+        action = menu.exec_(self.mapToGlobal(pos))
+
+        if action == delete_action:
+            self.delete_node()
+
+    def delete_node(self):
+        self.setParent(None)
+        self.deleteLater()

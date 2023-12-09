@@ -1,6 +1,6 @@
 # operations.py
 from PyQt5.QtWidgets import QMenu, QAction, QGraphicsProxyWidget
-from average_node import AverageNode
+from Single_Input_Operations.average_node import AverageNode
 
 def create_operation_menu(main_window):
     # Create a menu
