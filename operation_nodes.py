@@ -28,11 +28,8 @@ def create_operation_menu(main_window):
 def add_average_node(main_window):
     average_node = AverageNode()
 
-    # Create a proxy widget for AverageNode
-    proxy_widget = QGraphicsProxyWidget()
-    proxy_widget.setWidget(average_node)
-
-    main_window.scene.addItem(proxy_widget)
+    # Add average node to the scene
+    main_window.scene.addWidget(average_node)
 
     # Add average node to the graph
     average_node_data = {"type": "AverageNode"}  # You might want to add more data
