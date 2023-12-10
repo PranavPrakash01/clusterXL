@@ -1,6 +1,7 @@
 # operations.py
 from PyQt5.QtWidgets import QMenu, QAction, QGraphicsProxyWidget
 from Single_Input_Operations.average_node import AverageNode
+from nodes import Node
 
 def create_operation_menu(main_window):
     # Create a menu
@@ -32,3 +33,8 @@ def add_average_node(main_window):
     proxy_widget.setWidget(average_node)
 
     main_window.scene.addItem(proxy_widget)
+
+    # Add average node to the graph
+    average_node_data = {"type": "AverageNode"}  # You might want to add more data
+    average_node_graph = Node(node_id=len(main_window.graph.nodes) + 1, data=average_node_data)
+    main_window.graph.add_node(average_node_graph)
