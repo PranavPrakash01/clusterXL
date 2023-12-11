@@ -5,7 +5,7 @@ from nodes import Node, NodeGraph
 from operation_nodes import create_operation_menu
 from add_table_dialog import AddTableDialog
 from table_widget import TableWidget
-
+ 
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
