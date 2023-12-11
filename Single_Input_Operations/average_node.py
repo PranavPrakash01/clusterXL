@@ -1,8 +1,12 @@
 # average_node.py
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QMenu, QAction
 from PyQt5.QtCore import Qt, QPoint
+from PyQt5.QtGui import QPainter, QBrush, QPen
 
 class AverageNode(QWidget):
+    cell_width = 125
+    cell_height = 25
+
     def __init__(self):
         super().__init__()
 
@@ -14,6 +18,7 @@ class AverageNode(QWidget):
 
         # Title
         title_label = QLabel("AVERAGE")
+        title_label.setAlignment(Qt.AlignRight)  # Set alignment to right
         layout.addWidget(title_label)
 
         # Value
@@ -24,6 +29,24 @@ class AverageNode(QWidget):
         self.cell_widget.customContextMenuRequested.connect(self.show_context_menu)
 
         layout.addWidget(self.cell_widget)
+
+        # Set fixed size for the cell
+        self.cell_widget.setFixedSize(self.cell_width, self.cell_height)
+
+        # Set fixed size for the AverageNode
+        self.setFixedSize(150, 75)
+
+    def paintEvent(self, event):
+        painter = QPainter(self)
+        painter.setRenderHint(QPainter.Antialiasing)
+
+        # Draw a small circle on the left border, 1/3 of the height from the top
+        circle_radius = 5
+        border_width = 1  # Adjust this value based on the actual border width of your widget
+        circle_center = QPoint(border_width + circle_radius, self.height() // 3)
+        painter.setBrush(QBrush(Qt.gray))
+        painter.drawEllipse(circle_center, circle_radius, circle_radius)
+
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
