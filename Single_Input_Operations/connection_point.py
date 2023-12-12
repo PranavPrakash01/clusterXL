@@ -7,12 +7,27 @@ class ConnectionPoint(QWidget):
     def __init__(self, parent):
         super().__init__(parent)
         self.setFixedSize(15, 15)  # Adjust the size of the circle widget
+        self.is_selected = False
 
     def paintEvent(self, event):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
 
-        # Draw a small grey circle in the center
+        # Draw a small grey or red circle in the center based on selection
         circle_radius = 5
-        painter.setBrush(QBrush(Qt.gray))
+        if self.is_selected:
+            painter.setBrush(QBrush(Qt.red))
+        else:
+            painter.setBrush(QBrush(Qt.gray))
         painter.drawEllipse(self.rect().center(), circle_radius, circle_radius)
+
+    def mousePressEvent(self, event):
+        if event.button() == Qt.LeftButton:
+            # Toggle the selection state
+            self.is_selected = not self.is_selected
+            # Trigger a repaint to update the color
+            self.update()
+
+        # Propagate the event to the parent
+        super().mousePressEvent(event)
+    
