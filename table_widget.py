@@ -30,8 +30,8 @@ class TableWidget(QWidget):
         self.connection_points = [ConnectionPoint(self) for _ in range(columns)]
 
         for col, connection_point in enumerate(self.connection_points):
-            connection_point_position = QPoint(int((col + 0.5) * self.cell_width), self.height() - self.connection_point_radius)
-            connection_point.move(connection_point_position.x() - self.connection_point_radius, connection_point_position.y() - self.connection_point_radius)
+            connection_point_position = QPoint(int((col + 0.5) * self.cell_width), self.height() - self.connection_point_radius * 2)
+            connection_point.move(connection_point_position.x() - self.connection_point_radius, connection_point_position.y() - self.connection_point_radius + 3)
             connection_point.setParent(self)
 
     def create_table(self, rows, columns):
