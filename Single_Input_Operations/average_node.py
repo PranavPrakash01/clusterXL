@@ -3,7 +3,6 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QMenu
 from PyQt5.QtCore import Qt, QPoint
 from .connection_point import ConnectionPoint
 
-
 class AverageNode(QWidget):
     cell_width = 125
     cell_height = 25

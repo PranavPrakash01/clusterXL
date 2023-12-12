@@ -1,6 +1,7 @@
 # table_widget.py
 from PyQt5.QtWidgets import QWidget, QGridLayout, QLineEdit, QMenu, QInputDialog
 from PyQt5.QtCore import Qt, QPoint
+from Single_Input_Operations.connection_point import ConnectionPoint
 
 class TableWidget(QWidget):
     def __init__(self, rows, columns):
@@ -9,8 +10,9 @@ class TableWidget(QWidget):
         self.is_dragging = False
         self.offset = QPoint()
 
-        self.cell_width = 75  
+        self.cell_width = 75
         self.cell_height = 25
+        self.connection_point_radius = 5
 
         # Keep track of cell data
         self.cell_data = [[None for _ in range(columns)] for _ in range(rows)]
@@ -20,7 +22,17 @@ class TableWidget(QWidget):
 
         # Create the initial table structure
         self.create_table(rows, columns)
-        
+
+        # Create and add the ConnectionPoints
+        self.create_and_position_connection_points(columns)
+
+    def create_and_position_connection_points(self, columns):
+        self.connection_points = [ConnectionPoint(self) for _ in range(columns)]
+
+        for col, connection_point in enumerate(self.connection_points):
+            connection_point_position = QPoint(int((col + 0.5) * self.cell_width), self.height() - self.connection_point_radius)
+            connection_point.move(connection_point_position.x() - self.connection_point_radius, connection_point_position.y() - self.connection_point_radius)
+            connection_point.setParent(self)
 
     def create_table(self, rows, columns):
         self.cells = [[QLineEdit(self) for _ in range(columns)] for _ in range(rows)]
