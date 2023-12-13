@@ -1,9 +1,9 @@
-# sum_node.py
+# single_sum_node.py
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QLabel, QLineEdit, QMenu
 from PyQt5.QtCore import Qt, QPoint
 from .connection_point import ConnectionPoint
 
-class SumNode(QWidget):
+class SingleSumNode(QWidget):
     cell_width = 125
     cell_height = 25
 
@@ -33,7 +33,7 @@ class SumNode(QWidget):
         # Set fixed size for the cell
         self.cell_widget.setFixedSize(self.cell_width, self.cell_height)
 
-        # Set fixed size for the SumNode
+        # Set fixed size for the SingleSumNode
         self.setFixedSize(150, 75)
 
         # Create and add the ConnectionPoint
@@ -43,7 +43,7 @@ class SumNode(QWidget):
         connection_point_position = QPoint(0, self.height() // 3)
         self.connection_point.move(connection_point_position)
 
-        # Set the ConnectionPoint as a child widget to ensure it moves with the SumNode
+        # Set the ConnectionPoint as a child widget to ensure it moves with the SingleSumNode
         self.connection_point.setParent(self)
 
     def paintEvent(self, event):
