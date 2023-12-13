@@ -1,6 +1,6 @@
 # operation_nodes.py
 from PyQt5.QtWidgets import QMenu, QAction
-from Single_Input_Operations.sum_node import SumNode
+from Single_Input_Operations.single_sum_node import SingleSumNode
 from Single_Input_Operations.average_node import AverageNode
 from nodes import Node
 
@@ -41,12 +41,12 @@ def add_average_node(main_window):
     main_window.graph.add_node(average_node_graph)
 
 def add_sum_node(main_window):
-    sum_node = SumNode()
+    sum_node = SingleSumNode()
 
     # Add sum node to the scene
     main_window.scene.addWidget(sum_node)
 
     # Add sum node to the graph
-    sum_node_data = {"type": "SumNode"}  # You might want to add more data
+    sum_node_data = {"type": "SingleSumNode"}  # You might want to add more data
     sum_node_graph = Node(node_id=len(main_window.graph.nodes) + 1, data=sum_node_data)
     main_window.graph.add_node(sum_node_graph)
