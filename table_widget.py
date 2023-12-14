@@ -27,7 +27,7 @@ class TableWidget(QWidget):
         self.create_and_position_connection_points(columns)
 
     def create_and_position_connection_points(self, columns):
-        self.connection_points = [ConnectionPoint(self) for _ in range(columns)]
+        self.connection_points = [ConnectionPoint(self, node_type="Table", column=col + 1) for col in range(columns)]
 
         for col, connection_point in enumerate(self.connection_points):
             connection_point_position = QPoint(int((col + 0.5) * self.cell_width), self.height() - self.connection_point_radius * 2)
