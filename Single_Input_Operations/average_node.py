@@ -37,7 +37,7 @@ class AverageNode(QWidget):
         self.setFixedSize(150, 75)
 
         # Create and add the ConnectionPoint
-        self.connection_point = ConnectionPoint(self)
+        self.connection_point = ConnectionPoint(self, node_type="AverageNode")
 
         # Set the position of the ConnectionPoint manually for left border
         connection_point_position = QPoint(0, self.height() // 3)
