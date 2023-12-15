@@ -47,6 +47,7 @@ class MainWindow(QMainWindow):
 
         # Create table nodes
         self.table_nodes = []
+        self.table_id_counter = 0  # Counter to keep track of table IDs
 
         # Create operation nodes
         self.operation_nodes = []
@@ -64,15 +65,18 @@ class MainWindow(QMainWindow):
             rows = int(dialog.input_row.text())
             columns = int(dialog.input_column.text())
 
-            # Create a new table node with specified rows and columns
-            table_node = Node(node_id=len(self.table_nodes) + 1, data={"type": "Table", "rows": rows, "columns": columns})
+            # Increment the table ID counter
+            self.table_id_counter += 1
+
+            # Create a new table node with specified rows, columns, and ID
+            table_node = Node(node_id=len(self.table_nodes) + 1, data={"type": "Table", "rows": rows, "columns": columns, "id": self.table_id_counter})
             self.table_nodes.append(table_node)
 
             # Add table node to the graph
             self.graph.add_node(table_node)
 
-            # Create a TableWidget and add it to the scene
-            table_widget = TableWidget(rows, columns)
+            # Create a TableWidget with ID and add it to the scene
+            table_widget = TableWidget(table_id=self.table_id_counter, rows=rows, columns=columns)
             self.scene.addWidget(table_widget)
             
     def add_operation_node(self):

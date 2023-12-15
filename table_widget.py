@@ -1,14 +1,15 @@
 # table_widget.py
-from PyQt5.QtWidgets import QWidget, QGridLayout, QLineEdit, QMenu, QInputDialog
+from PyQt5.QtWidgets import QWidget, QGridLayout, QLineEdit, QMenu, QLabel, QVBoxLayout,QInputDialog, QHBoxLayout
 from PyQt5.QtCore import Qt, QPoint
 from Single_Input_Operations.connection_point import ConnectionPoint
 
 class TableWidget(QWidget):
-    def __init__(self, rows, columns):
+    def __init__(self, table_id, rows, columns):
         super().__init__()
 
         self.is_dragging = False
         self.offset = QPoint()
+        self.table_id = table_id
 
         self.cell_width = 75
         self.cell_height = 25
@@ -17,22 +18,40 @@ class TableWidget(QWidget):
         # Keep track of cell data
         self.cell_data = [[None for _ in range(columns)] for _ in range(rows)]
 
-        self.layout = QGridLayout(self)
+        # Main vertical layout for the table
+        main_layout = QVBoxLayout(self)
+
+        # Title label
+        title_label = QLabel(f"Title {self.table_id}")
+        main_layout.addWidget(title_label)
+
+        # Grid layout for cells
+        self.layout = QGridLayout()
         self.cells = []
 
         # Create the initial table structure
         self.create_table(rows, columns)
 
-        # Create and add the ConnectionPoints
+        # Add the grid layout to the main layout
+        main_layout.addLayout(self.layout)
+
+        # Create and add the ConnectionPoints below the grid
         self.create_and_position_connection_points(columns)
+        self.add_connection_points_to_layout(main_layout)
 
     def create_and_position_connection_points(self, columns):
         self.connection_points = [ConnectionPoint(self, node_type="Table", column=col + 1) for col in range(columns)]
 
-        for col, connection_point in enumerate(self.connection_points):
-            connection_point_position = QPoint(int((col + 0.5) * self.cell_width), self.height() - self.connection_point_radius * 2)
-            connection_point.move(connection_point_position.x() - self.connection_point_radius, connection_point_position.y() - self.connection_point_radius + 3)
-            connection_point.setParent(self)
+    def add_connection_points_to_layout(self, layout):
+        # Create a horizontal layout for connection points
+        connection_points_layout = QHBoxLayout()
+
+        # Add connection points to the layout
+        for connection_point in self.connection_points:
+            connection_points_layout.addWidget(connection_point)
+
+        # Add the connection points layout to the main layout
+        layout.addLayout(connection_points_layout)
 
     def create_table(self, rows, columns):
         self.cells = [[QLineEdit(self) for _ in range(columns)] for _ in range(rows)]
