@@ -22,7 +22,7 @@ class TableWidget(QWidget):
         main_layout = QVBoxLayout(self)
 
         # Title label
-        title_label = QLabel(f"Title {self.table_id}")
+        title_label = QLabel(f"Table {self.table_id}")
         main_layout.addWidget(title_label)
 
         # Grid layout for cells
