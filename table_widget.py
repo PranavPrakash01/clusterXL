@@ -25,6 +25,8 @@ class TableWidget(QWidget):
         title_label = QLabel(f"Table {self.table_id}")
         main_layout.addWidget(title_label)
 
+        title_label.setContentsMargins(0,0,0,10)
+
         # Grid layout for cells
         self.layout = QGridLayout()
         self.cells = []
@@ -39,10 +41,13 @@ class TableWidget(QWidget):
         self.create_and_position_connection_points(columns)
         self.add_connection_points_to_layout(main_layout)
 
+        main_layout.setSpacing(2)
+
     def create_and_position_connection_points(self, columns):
         self.connection_points = [ConnectionPoint(self, node_type="Table", column=col + 1) for col in range(columns)]
 
     def add_connection_points_to_layout(self, layout):
+        
         # Create a horizontal layout for connection points
         connection_points_layout = QHBoxLayout()
 
