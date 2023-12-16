@@ -7,7 +7,7 @@ class ConnectionPoint(QWidget):
     def __init__(self, parent, node_type, column=None):
         super().__init__(parent)
         self.setFixedSize(15, 15)  # Adjust the size of the circle widget
-        self.is_selected = False
+        self.is_active = False  # Changed from is_selected to is_active
         self.node_type = node_type
         self.column = column
 
@@ -15,9 +15,9 @@ class ConnectionPoint(QWidget):
         painter = QPainter(self)
         painter.setRenderHint(QPainter.Antialiasing)
 
-        # Draw a small grey or red circle in the center based on selection
+        # Draw a small grey or red circle in the center based on activation
         circle_radius = 5
-        if self.is_selected:
+        if self.is_active:  # Changed from is_selected to is_active
             painter.setBrush(QBrush(Qt.red))
         else:
             painter.setBrush(QBrush(Qt.gray))
@@ -25,22 +25,24 @@ class ConnectionPoint(QWidget):
 
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
-            # Toggle the selection state
-            self.is_selected = not self.is_selected
+            # Toggle the activation state
+            previous_state = self.is_active  # Store the previous state
+            self.is_active = not self.is_active  # Changed from is_selected to is_active
             # Trigger a repaint to update the color
             self.update()
 
-            # Print the connection point information
-            self.print_connection_point_info()
+            # Print the connection point information with the active state
+            self.print_connection_point_info(previous_state)
 
         # Propagate the event to the parent
         super().mousePressEvent(event)
 
-    def print_connection_point_info(self):
+    def print_connection_point_info(self, previous_state):
+        activation_state = "Activated" if self.is_active else "Deactivated"
         if self.node_type == "SingleSumNode":
-            print("Connection Point: Single Input Sum Node")
+            print(f"Connection Point: Single Input Sum Node [{activation_state}]")
         elif self.node_type == "AverageNode":
-            print("Connection Point: Single Input Average Node")
+            print(f"Connection Point: Single Input Average Node [{activation_state}]")
         elif self.node_type == "Table":
             if self.column is not None:
-                print(f"Connection Point: Table Column {self.column}")
+                print(f"Connection Point: Table Column {self.column} [{activation_state}]")
