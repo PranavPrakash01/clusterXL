@@ -10,7 +10,6 @@ This project aims to create a node-based spreadsheet application using Python an
   
 - **Operations:** Basic operations such as row addition and subtraction are implemented, and users can create custom operations.
 
-- **User-Friendly Interface:** The application provides a user-friendly interface with buttons to add tables, add operations, and more.
 
 ## Getting Started
 
