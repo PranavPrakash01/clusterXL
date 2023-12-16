@@ -6,9 +6,9 @@ This project aims to create a node-based spreadsheet application using Python an
 
 ## Features
 
-- **Node Structure:** Each table is represented as a node, and users can connect nodes to perform operations.
+- **Node Structure:** Each table is represented as a node, and users can connect nodes and operations to perform operations.
   
-- **Operations:** Basic operations such as row addition and subtraction are implemented, and users can create custom operations.
+- **Operations:** Basic operations such as column addition and average are implemented, and users can create custom operations.
 
 
 ## Getting Started
