@@ -1,5 +1,11 @@
 # Node-Based Spreadsheet
 
+## ⚠️ Warning: Work in Progress
+
+
+**This project is currently under development and is not considered complete. Expect frequent updates, changes, and additional features. Use it at your own discretion. Contributions and feedback are highly encouraged.**
+
+
 ## Overview
 
 This project aims to create a node-based spreadsheet application using Python and PyQt5. The spreadsheet allows users to perform operations between tables by connecting nodes. Each table is represented as a node, and various operations can be performed using operation nodes. DISCLAIMER : THIS IS STILL NOT FUNCTIONAL IT IS UNDER DEVELOPMENT
