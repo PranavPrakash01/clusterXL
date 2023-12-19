@@ -11,7 +11,7 @@ class MainWindow(QMainWindow):
         super().__init__()
 
         # Create the main window
-        self.setWindowTitle("Node-based Spreadsheet")
+        self.setWindowTitle("ClusterXL")
 
         # Create a central widget and layout
         central_widget = QWidget(self)
