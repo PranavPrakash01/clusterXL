@@ -5,7 +5,8 @@ from nodes import Node, NodeGraph
 from operation_nodes import create_operation_menu
 from add_table_dialog import AddTableDialog
 from table_widget import TableWidget
- 
+from PyQt5.QtGui import QPen
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -39,6 +40,20 @@ class MainWindow(QMainWindow):
         self.addOperationButton.clicked.connect(self.add_operation_node)
         ribbon_layout.addWidget(self.addOperationButton)
 
+        #------------------------------------------------------------------
+        # Add the new button for testing lines
+        self.testLinesButton = QPushButton("Test Lines", self)
+        self.testLinesButton.clicked.connect(self.start_test_lines)
+        ribbon_layout.addWidget(self.testLinesButton)
+
+        # Variable to track whether "Test Lines" mode is active
+        self.test_lines_mode = False
+
+        # Variables to store the starting and ending points for the line
+        self.start_point = None
+        self.end_point = None
+        #------------------------------------------------------------------
+
         # Add the ribbon layout to the main layout
         layout.addLayout(ribbon_layout)
 
@@ -58,6 +73,53 @@ class MainWindow(QMainWindow):
         # Show the main window
         self.showMaximized()
 
+    #------------------------------------------------------------------
+    # Define the function to be executed when the "Test Lines" button is clicked
+    def start_test_lines(self):
+        # Enable the test lines mode only if it's not already active
+        if not self.test_lines_mode:
+            self.test_lines_mode = True
+            print(self.test_lines_mode)
+
+            # Clear any previous points
+            self.start_point = None
+            self.end_point = None
+
+            # Connect the scene's mouse press event to handle clicking points
+            self.scene.mousePressEvent = self.handle_test_lines_mouse_press
+
+    # Define the function to handle mouse press events during "Test Lines" mode
+    def handle_test_lines_mouse_press(self, event):
+        if self.test_lines_mode:
+            # Get the position of the mouse click
+            click_position = event.scenePos()
+
+            # If start_point is None, set it to the current click position
+            # If start_point is already set, set end_point and draw the line
+            if self.start_point is None:
+                self.start_point = click_position
+            else:
+                self.end_point = click_position
+
+                # Draw a line between start_point and end_point
+                line_item = self.scene.addLine(self.start_point.x(), self.start_point.y(),
+                                               self.end_point.x(), self.end_point.y())
+
+                # Set the line color and thickness (red, 2 pixels)
+                line_item.setPen(QPen(Qt.red, 2))
+
+                # Reset points for the next line
+                self.start_point = None
+                self.end_point = None
+
+                # Disable test lines mode after drawing a line
+                self.test_lines_mode = False
+
+                # Disconnect the custom mouse press event, revert to the default behavior
+                self.scene.mousePressEvent = None
+
+    #------------------------------------------------------------------
+        
     def show_add_table_dialog(self):
         dialog = AddTableDialog(self)
         if dialog.exec_():
